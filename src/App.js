@@ -1,4 +1,6 @@
 import { Layout } from 'antd';
+import { Switch, Route } from 'react-router-dom';
+import { Home, Team } from './pages';
 import logo from './assets/logo.svg';
 
 const { Header, Content } = Layout;
@@ -12,7 +14,12 @@ const App = () => (
     <Header style={headerStyle}>
       <img src={logo} alt='App Logo' style={logoStyle} />
     </Header>
-    <Content style={contentStyle}>Content</Content>
+    <Content style={contentStyle}>
+      <Switch>
+        <Route path='/team/:id' component={Team} />
+        <Route path='/' exact component={Home} />
+      </Switch>
+    </Content>
   </Layout>
 );
 

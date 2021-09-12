@@ -2,6 +2,8 @@
   "extends": [ "react-app", "react-app/jest", "plugin:prettier/recommended" ],
   "plugins": ["prettier"],
   "rules": {
+    "import/imports-first": [ "error", "absolute-first" ],
+    "import/newline-after-import": "error",
     "prettier/prettier":"warn"
   }
 }
