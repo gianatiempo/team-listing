@@ -51,7 +51,7 @@ const handlers = [
     const order = req.url.searchParams.get('order');
 
     const sortedData =
-      order !== 'undefined'
+      order && order !== 'undefined'
         ? data.sort((a, b) => (order === 'ascend' ? (a[sort] < b[sort] && 1) || -1 : (a[sort] > b[sort] && 1) || -1))
         : data.sort((a, b) => a.id - b.id);
 
