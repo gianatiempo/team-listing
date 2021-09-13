@@ -3,13 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const columns = [
-  {
-    title: 'Team name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text, row) => <Link to={`/team/${row.id}`}>{text}</Link>,
-    width: 150
-  },
+  { title: 'Team name', dataIndex: 'name', key: 'name', render: (name, r) => <Link to={`/team/${r.id}`}>{name}</Link> },
   { title: 'Members', dataIndex: 'members', key: 'members' },
   { title: 'Building', dataIndex: 'building', key: 'building' },
   { title: 'Lvl 1', dataIndex: 'lvl1', key: 'lvl1' },
@@ -26,11 +20,16 @@ const paginationStyle = { padding: '10px 0', float: 'right' };
 const Home = () => {
   const [teamsData, setTeamsData] = useState([]);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [filter, setFilter] = useState({});
 
   useEffect(() => {
     fetch(`/api/team?page=${pagination.current}&limit=${pagination.pageSize}`)
       .then(resp => resp.json())
       .then(setTeamsData);
+
+    fetch(`/api/team/filters`)
+      .then(resp => resp.json())
+      .then(setFilter);
   }, [pagination]);
 
   return (
