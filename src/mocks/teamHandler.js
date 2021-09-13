@@ -53,7 +53,11 @@ const handlers = [
         lvl6: `Mgmt 6 #${random(2)}`, // up to 2 lvl 6
         skills: getRandomSkills(3), // up to 3 team skills
         teamMembers: [...Array(members)].map((item, i) => ({
-          name: `Member ${i + 1} Name`,
+          id: i,
+          username: `username${i}`,
+          name: 'Random User',
+          lastName: i + 1,
+          photoUrl: 'https://ui-avatars.com/api/?background=random',
           bio: `Bio of Member ${i + 1} in the company`,
           skills: getRandomSkills(5),
           role: getRandomRole()

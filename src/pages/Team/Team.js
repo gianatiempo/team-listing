@@ -1,8 +1,9 @@
-import { Row, Col, Card, Typography, Tag, Space, Divider } from 'antd';
-import { useState, useEffect } from 'react';
+import { Row, Col, Card, Typography, Tag, Space, Divider, List, Avatar, Button } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-const { Title, Text } = Typography;
+const { Title, Paragraph } = Typography;
 
 const Team = () => {
   const { id } = useParams();
@@ -16,36 +17,60 @@ const Team = () => {
 
   return (
     <Row gutter={16}>
-      <Col span={6}>
+      <Col span={7}>
         <Card>
-          <Title level={2}>{team.name}</Title>
-          <Space direction='vertical' split={<Divider />}>
-            <Text>{team.objective}</Text>
-            <Text>Members: {team.members}</Text>
-            <Text>
-              Skills:{' '}
-              {team.skills?.map(s => (
-                <Tag key={s}>{s}</Tag>
-              ))}
-            </Text>
-            <Text>Building:{team.building}</Text>
-            <Space direction='horizontal' split={<Divider type='vertical' />}>
-              {team.lvl1}
-              {team.lvl2}
-              {team.lvl3}
-              {team.lvl4}
-              {team.lvl5}
-              {team.lvl6}
-            </Space>
-            <Link to='/'>Go Back to List</Link>
+          <Space direction='horizontal' style={{ marginBottom: '1em' }}>
+            <Link to='/'>
+              <Button type='primary' icon={<ArrowLeftOutlined />} size='large' />
+            </Link>
+            <Title level={3} style={{ margin: 0 }}>
+              {team.name}
+            </Title>
           </Space>
+          <Paragraph>{team.objective}</Paragraph>
+          <Divider />
+          <Paragraph>
+            <Title level={5}>Members:</Title> {team.members}
+          </Paragraph>
+          <Paragraph>
+            <Title level={5}>Skills:</Title>
+            {team.skills?.map(s => (
+              <Tag key={s}>{s}</Tag>
+            ))}
+          </Paragraph>
+          <Divider />
+          <Paragraph>
+            <Title level={5}>Building:</Title>
+            {team.building}
+          </Paragraph>
+          <Paragraph>
+            <Title level={5}>Management Hierarchy:</Title>
+            <Space direction='horizontal' split={<Divider type='vertical' />}>
+              {team.lvl1} {team.lvl2} {team.lvl3} {team.lvl4} {team.lvl5} {team.lvl6}
+            </Space>
+          </Paragraph>
         </Card>
       </Col>
       <Col span={17}>
         <Card>
-          <p>Card content</p>
-          <p>Card content</p>
-          <p>Card content</p>
+          <List
+            itemLayout='vertical'
+            dataSource={team.teamMembers}
+            renderItem={item => (
+              <List.Item
+                key={item.id}
+                actions={item.skills?.map(s => (
+                  <Tag key={s}>{s}</Tag>
+                ))}>
+                <List.Item.Meta
+                  avatar={<Avatar src={item.photoUrl} size={64} />}
+                  title={`${item.name} ${item.lastName}`}
+                  description={item.role}
+                />
+                {item.bio}
+              </List.Item>
+            )}
+          />
         </Card>
       </Col>
     </Row>
