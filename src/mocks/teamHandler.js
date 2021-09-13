@@ -68,7 +68,6 @@ const handlers = [
         lvl5: getRandomMgmtLvl(5, 6).sort(),
         lvl6: getRandomMgmtLvl(6, 6).sort(),
         skills: getRandomSkills(8).sort(),
-        role: getRandomRoles(6).sort(),
         building: getRandomBuildings(4).sort()
       })
     );

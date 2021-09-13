@@ -40,6 +40,13 @@ const Home = () => {
     }
   };
 
+  if (Object.keys(filter).length) {
+    Object.keys(filter).forEach(f => {
+      const idx = columns.findIndex(c => c.key === f);
+      columns[idx] = { ...columns[idx], filters: filter[f].map(elem => ({ text: elem, value: elem })) };
+    });
+  }
+
   return (
     <Row>
       <Col span={24}>
