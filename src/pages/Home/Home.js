@@ -19,8 +19,8 @@ const paginationStyle = { padding: '10px 0', float: 'right' };
 
 const Home = () => {
   const [teamsData, setTeamsData] = useState([]);
+  const [columnsData, setColumnsData] = useState([]);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10, sort: 'name', order: 'descend' });
-  const [filter, setFilter] = useState({});
 
   useEffect(() => {
     fetch(
@@ -31,7 +31,15 @@ const Home = () => {
 
     fetch(`/api/team/filters`)
       .then(resp => resp.json())
-      .then(setFilter);
+      .then(data => {
+        const newCols = [...columns];
+
+        Object.keys(data).forEach(f => {
+          const idx = columns.findIndex(c => c.key === f);
+          newCols[idx] = { ...columns[idx], filters: data[f].map(elem => ({ text: elem, value: elem })) };
+        });
+        setColumnsData(newCols);
+      });
   }, [pagination]);
 
   const onChange = (paginationData, filtersData, sorter, extra) => {
@@ -40,18 +48,11 @@ const Home = () => {
     }
   };
 
-  if (Object.keys(filter).length) {
-    Object.keys(filter).forEach(f => {
-      const idx = columns.findIndex(c => c.key === f);
-      columns[idx] = { ...columns[idx], filters: filter[f].map(elem => ({ text: elem, value: elem })) };
-    });
-  }
-
   return (
     <Row>
       <Col span={24}>
         <Table
-          columns={columns}
+          columns={columnsData}
           dataSource={teamsData.data}
           rowKey='id'
           size='middle'
