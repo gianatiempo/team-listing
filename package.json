@@ -15,6 +15,7 @@
     "@testing-library/user-event": "^12.1.10",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "msw": "^0.35.0",
     "prettier": "^2.3.1"
   },
   "scripts": {
@@ -39,5 +40,8 @@
     "transformIgnorePatterns": [
       "/node_modules/(?!antd|@ant-design|rc-.+?|@babel/runtime).+(js|jsx)$"
     ]
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
