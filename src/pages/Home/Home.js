@@ -25,13 +25,13 @@ const paginationStyle = { padding: '10px 0', float: 'right' };
 
 const Home = () => {
   const [teamsData, setTeamsData] = useState([]);
-  const [filter, setFilter] = useState({ current: 1, pageSize: 10 });
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
   useEffect(() => {
-    fetch(`/api/team?page=${filter.current}&limit=${filter.pageSize}`)
+    fetch(`/api/team?page=${pagination.current}&limit=${pagination.pageSize}`)
       .then(resp => resp.json())
       .then(setTeamsData);
-  }, [filter]);
+  }, [pagination]);
 
   return (
     <Row>
@@ -43,9 +43,9 @@ const Home = () => {
           total={teamsData.total}
           showTotal={(total, range) => `${range[0]}-${range[1]} of ${total}`}
           showSizeChanger
-          current={filter.current}
-          pageSize={filter.pageSize}
-          onChange={(current, pageSize) => setFilter({ current, pageSize })}
+          current={pagination.current}
+          pageSize={pagination.pageSize}
+          onChange={(current, pageSize) => setPagination({ current, pageSize })}
         />
       </Col>
     </Row>
