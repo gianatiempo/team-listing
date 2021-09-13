@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 
 const columns = [
   { title: 'Team name', dataIndex: 'name', key: 'name', render: (name, r) => <Link to={`/team/${r.id}`}>{name}</Link> },
-  { title: 'Members', dataIndex: 'members', key: 'members', sorter: (a, b) => a - b },
-  { title: 'Building', dataIndex: 'building', key: 'building', sorter: (a, b) => a - b },
-  { title: 'Lvl 1', dataIndex: 'lvl1', key: 'lvl1', sorter: (a, b) => a - b },
-  { title: 'Lvl 2', dataIndex: 'lvl2', key: 'lvl2', sorter: (a, b) => a - b },
-  { title: 'Lvl 3', dataIndex: 'lvl3', key: 'lvl3', sorter: (a, b) => a - b },
-  { title: 'Lvl 4', dataIndex: 'lvl4', key: 'lvl4', sorter: (a, b) => a - b },
-  { title: 'Lvl 5', dataIndex: 'lvl5', key: 'lvl5', sorter: (a, b) => a - b },
-  { title: 'Lvl 6', dataIndex: 'lvl6', key: 'lvl6', sorter: (a, b) => a - b },
+  { title: 'Members', dataIndex: 'members', key: 'members', sortDirections: ['ascend', 'descend'] },
+  { title: 'Building', dataIndex: 'building', key: 'building', sortDirections: ['ascend', 'descend'] },
+  { title: 'Lvl 1', dataIndex: 'lvl1', key: 'lvl1', sortDirections: ['ascend', 'descend'] },
+  { title: 'Lvl 2', dataIndex: 'lvl2', key: 'lvl2', sortDirections: ['ascend', 'descend'] },
+  { title: 'Lvl 3', dataIndex: 'lvl3', key: 'lvl3', sortDirections: ['ascend', 'descend'] },
+  { title: 'Lvl 4', dataIndex: 'lvl4', key: 'lvl4', sortDirections: ['ascend', 'descend'] },
+  { title: 'Lvl 5', dataIndex: 'lvl5', key: 'lvl5', sortDirections: ['ascend', 'descend'] },
+  { title: 'Lvl 6', dataIndex: 'lvl6', key: 'lvl6', sortDirections: ['ascend', 'descend'] },
   { title: 'Skills', dataIndex: 'skills', key: 'skills', render: skills => skills.map(s => <Tag key={s}>{s}</Tag>) }
 ];
 
@@ -43,6 +43,9 @@ const Home = () => {
   }, [pagination]);
 
   const onChange = (paginationData, filtersData, sorter, extra) => {
+    console.log(paginationData, filtersData, sorter, extra);
+    if (extra.action === 'filter') {
+    }
     if (extra.action === 'sort') {
       setPagination({ ...pagination, sort: sorter.columnKey, order: sorter.order });
     }
