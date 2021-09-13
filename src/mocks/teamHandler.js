@@ -32,13 +32,13 @@ for (let i = 1; i <= 300; i++) {
     id: i,
     name: `Team Number ${i}`,
     members: random(14), // up to 14 team members
-    building: getRandomBuildings(1), // up to 4 buildings
-    lvl1: getRandomMgmtLvl(1, 1),
-    lvl2: getRandomMgmtLvl(2, 1),
-    lvl3: getRandomMgmtLvl(3, 1),
-    lvl4: getRandomMgmtLvl(4, 1),
-    lvl5: getRandomMgmtLvl(5, 1),
-    lvl6: getRandomMgmtLvl(6, 1),
+    building: getRandomBuildings(1)[0], // up to 4 buildings
+    lvl1: getRandomMgmtLvl(1, 1)[0],
+    lvl2: getRandomMgmtLvl(2, 1)[0],
+    lvl3: getRandomMgmtLvl(3, 1)[0],
+    lvl4: getRandomMgmtLvl(4, 1)[0],
+    lvl5: getRandomMgmtLvl(5, 1)[0],
+    lvl6: getRandomMgmtLvl(6, 1)[0],
     skills: getRandomSkills(3) // up to 3 team skills
   });
 }
@@ -47,8 +47,15 @@ const handlers = [
   rest.get('/api/team', (req, res, ctx) => {
     const page = req.url.searchParams.get('page');
     const limit = req.url.searchParams.get('limit');
+    const sort = req.url.searchParams.get('sort');
+    const order = req.url.searchParams.get('order');
 
-    return res(ctx.json({ data: data.slice((page - 1) * limit, page * limit), total: data.length }));
+    const sortedData =
+      order !== 'undefined'
+        ? data.sort((a, b) => (order === 'ascend' ? (a[sort] < b[sort] && 1) || -1 : (a[sort] > b[sort] && 1) || -1))
+        : data.sort((a, b) => a.id - b.id);
+
+    return res(ctx.json({ data: sortedData.slice((page - 1) * limit, page * limit), total: data.length }));
   }),
 
   rest.get('/api/team/filters', (req, res, ctx) => {
@@ -77,12 +84,12 @@ const handlers = [
         objective: 'This team was created to push forward some project.',
         members, // up to 14 team members
         building: getRandomBuildings(1), // up to 4 buildings
-        lvl1: getRandomMgmtLvl(1, 1),
-        lvl2: getRandomMgmtLvl(2, 1),
-        lvl3: getRandomMgmtLvl(3, 1),
-        lvl4: getRandomMgmtLvl(4, 1),
-        lvl5: getRandomMgmtLvl(5, 1),
-        lvl6: getRandomMgmtLvl(6, 1),
+        lvl1: getRandomMgmtLvl(1, 1)[0],
+        lvl2: getRandomMgmtLvl(2, 1)[0],
+        lvl3: getRandomMgmtLvl(3, 1)[0],
+        lvl4: getRandomMgmtLvl(4, 1)[0],
+        lvl5: getRandomMgmtLvl(5, 1)[0],
+        lvl6: getRandomMgmtLvl(6, 1)[0],
         skills: getRandomSkills(3), // up to 3 team skills
         teamMembers: [...Array(members)].map((item, i) => ({
           id: i,
