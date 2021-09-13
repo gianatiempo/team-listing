@@ -1,4 +1,4 @@
-import { Row, Col, Table, Tag } from 'antd';
+import { Row, Col, Table, Tag, Pagination } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -21,19 +21,32 @@ const columns = [
   { title: 'Skills', dataIndex: 'skills', key: 'skills', render: skills => skills.map(s => <Tag key={s}>{s}</Tag>) }
 ];
 
+const paginationStyle = { padding: '10px 0', float: 'right' };
+
 const Home = () => {
-  const [teams, setTeams] = useState([]);
+  const [teamsData, setTeamsData] = useState([]);
+  const [filter, setFilter] = useState({ current: 1, pageSize: 10 });
 
   useEffect(() => {
-    fetch('/api/team')
+    fetch(`/api/team?page=${filter.current}&limit=${filter.pageSize}`)
       .then(resp => resp.json())
-      .then(json => setTeams(json.data));
-  }, []);
+      .then(setTeamsData);
+  }, [filter]);
 
   return (
     <Row>
       <Col span={24}>
-        <Table columns={columns} dataSource={teams} rowKey='id' size='middle' />
+        <Table columns={columns} dataSource={teamsData.data} rowKey='id' size='middle' pagination={false} />
+        <Pagination
+          style={paginationStyle}
+          size='small'
+          total={teamsData.total}
+          showTotal={(total, range) => `${range[0]}-${range[1]} of ${total}`}
+          showSizeChanger
+          current={filter.current}
+          pageSize={filter.pageSize}
+          onChange={(current, pageSize) => setFilter({ current, pageSize })}
+        />
       </Col>
     </Row>
   );
