@@ -46,7 +46,12 @@ const Team = () => {
           <Paragraph>
             <Title level={5}>Management Hierarchy:</Title>
             <Space direction='horizontal' split={<Divider type='vertical' />}>
-              {team.lvl1} {team.lvl2} {team.lvl3} {team.lvl4} {team.lvl5} {team.lvl6}
+              {team.lvl1}
+              {team.lvl2}
+              {team.lvl3}
+              {team.lvl4}
+              {team.lvl5}
+              {team.lvl6}
             </Space>
           </Paragraph>
         </Card>
