@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-export const handlers = [
+const handlers = [
   rest.get('/api/user', (req, res, ctx) => {
     return res(
       ctx.json({
@@ -12,3 +12,5 @@ export const handlers = [
     );
   })
 ];
+
+export default handlers;
