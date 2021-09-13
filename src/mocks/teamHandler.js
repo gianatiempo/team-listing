@@ -7,11 +7,24 @@ const getRandomSkills = num =>
     .sort(() => 0.5 - Math.random())
     .splice(0, num);
 
-const getRandomRole = () =>
+const getRandomRoles = num =>
   ['Developer', 'Functional Analyst', 'Tester', 'Project Manager', 'UX Expert', 'Product Owner']
     .slice(0)
     .sort(() => 0.5 - Math.random())
-    .splice(0, 1);
+    .splice(0, num);
+
+const getRandomBuildings = num =>
+  ['Main Tech 1', 'Main Tech 2', 'Main Tech 3', 'Main Tech 4']
+    .slice(0)
+    .sort(() => 0.5 - Math.random())
+    .splice(0, num);
+
+const getRandomMgmtLvl = (lvl, num, total = 6) =>
+  [...Array(total)]
+    .map((item, i) => `Mgmt ${lvl} #${i}`)
+    .slice(0)
+    .sort(() => 0.5 - Math.random())
+    .splice(0, num);
 
 const data = [];
 for (let i = 1; i <= 300; i++) {
@@ -19,13 +32,13 @@ for (let i = 1; i <= 300; i++) {
     id: i,
     name: `Team Number ${i}`,
     members: random(14), // up to 14 team members
-    building: `Main Tech ${random(4)}`, // up to 4 buildings
-    lvl1: `Mgmt 1 #${random(3)}`, // up to 3 lvl 1
-    lvl2: `Mgmt 2 #${random(4)}`, // up to 4 lvl 2
-    lvl3: `Mgmt 3 #${random(5)}`, // up to 5 lvl 3
-    lvl4: `Mgmt 4 #${random(4)}`, // up to 4 lvl 4
-    lvl5: `Mgmt 5 #${random(3)}`, // up to 3 lvl 5
-    lvl6: `Mgmt 6 #${random(2)}`, // up to 2 lvl 6
+    building: getRandomBuildings(1), // up to 4 buildings
+    lvl1: getRandomMgmtLvl(1, 1),
+    lvl2: getRandomMgmtLvl(2, 1),
+    lvl3: getRandomMgmtLvl(3, 1),
+    lvl4: getRandomMgmtLvl(4, 1),
+    lvl5: getRandomMgmtLvl(5, 1),
+    lvl6: getRandomMgmtLvl(6, 1),
     skills: getRandomSkills(3) // up to 3 team skills
   });
 }
@@ -38,6 +51,22 @@ const handlers = [
     return res(ctx.json({ data: data.slice((page - 1) * limit, page * limit), total: data.length }));
   }),
 
+  rest.get('/api/team/filters', (req, res, ctx) => {
+    return res(
+      ctx.json({
+        lvl1: getRandomMgmtLvl(1, 6).sort(),
+        lvl2: getRandomMgmtLvl(2, 6).sort(),
+        lvl3: getRandomMgmtLvl(3, 6).sort(),
+        lvl4: getRandomMgmtLvl(4, 6).sort(),
+        lvl5: getRandomMgmtLvl(5, 6).sort(),
+        lvl6: getRandomMgmtLvl(6, 6).sort(),
+        skills: getRandomSkills(8).sort(),
+        role: getRandomRoles(6).sort(),
+        building: getRandomBuildings(4).sort()
+      })
+    );
+  }),
+
   rest.get('/api/team/:id', (req, res, ctx) => {
     const { id } = req.params;
     const members = random(14);
@@ -47,13 +76,13 @@ const handlers = [
         name: `Team Number ${id}`,
         objective: 'This team was created to push forward some project.',
         members, // up to 14 team members
-        building: `Main Tech ${random(4)}`, // up to 4 buildings
-        lvl1: `Mgmt 1 #${random(3)}`, // up to 3 lvl 1
-        lvl2: `Mgmt 2 #${random(4)}`, // up to 4 lvl 2
-        lvl3: `Mgmt 3 #${random(5)}`, // up to 5 lvl 3
-        lvl4: `Mgmt 4 #${random(4)}`, // up to 4 lvl 4
-        lvl5: `Mgmt 5 #${random(3)}`, // up to 3 lvl 5
-        lvl6: `Mgmt 6 #${random(2)}`, // up to 2 lvl 6
+        building: getRandomBuildings(1), // up to 4 buildings
+        lvl1: getRandomMgmtLvl(1, 1),
+        lvl2: getRandomMgmtLvl(2, 1),
+        lvl3: getRandomMgmtLvl(3, 1),
+        lvl4: getRandomMgmtLvl(4, 1),
+        lvl5: getRandomMgmtLvl(5, 1),
+        lvl6: getRandomMgmtLvl(6, 1),
         skills: getRandomSkills(3), // up to 3 team skills
         teamMembers: [...Array(members)].map((item, i) => ({
           id: i,
@@ -63,7 +92,7 @@ const handlers = [
           photoUrl: 'https://ui-avatars.com/api/?background=random',
           bio: `Bio of Member ${i + 1} in the company`,
           skills: getRandomSkills(5),
-          role: getRandomRole()
+          role: getRandomRoles(1)
         }))
       })
     );
